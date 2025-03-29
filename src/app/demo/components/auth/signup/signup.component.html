@@ -1,0 +1,79 @@
+<div style="margin-top: 30px;" class="surface-ground flex  justify-content-center min-h-screen min-w-screen overflow-hidden">
+    <div class="flex flex-column align-items-center justify-content-center">
+       
+        <div
+            style="margin-top: 10px; border-radius:0px; padding:0.3rem; ">
+            <div class="w-full surface-card py-6 px-5 sm:px-8" style="border-radius:16px">
+                <div class="text-center mb-5">
+                    <!-- <img src="assets/demo/images/login/avatar.png" alt="Image" height="50" class="mb-3"> -->
+                    <div class="text-900 text-3xl font-medium mb-3">The Bayers Healthcare</div>
+                </div>
+                <form  name="form" (ngSubmit)="f.form.valid && onSubmit()" #f="ngForm" novalidate>
+                    <div class="form-group">
+                        <input id="firstName" type="text" (ngModelChange)="clearDefaults()" class="form-control w-full md:w-30rem mb-5" name="firstName"
+                            [(ngModel)]="form.firstName" required #firstName="ngModel" pInputText
+                            placeholder="Name" style="padding:1rem" />
+                    </div>
+                    
+
+                    <div class="form-group">
+                        <p-password [feedback]="false" (ngModelChange)="clearDefaults()" id="password1" type="password" 
+                            name="password" [(ngModel)]="form.password"  required minlength="3" placeholder="Password"
+                            [toggleMask]="false" styleClass="form-control w-full md:w-30rem mb-5" inputStyleClass="w-full p-3 md:w-30rem"
+                            #password="ngModel">
+                        </p-password>
+
+                    </div>
+
+                    <div  *ngIf="from == 'patient'" class="form-group">
+                        <input id="pastHistory" type="text" (ngModelChange)="clearDefaults()" class="form-control w-full md:w-30rem mb-5"
+                            name="pastHistory" [(ngModel)]="form.pastHistory" required #pastHistory="ngModel" pInputText
+                            placeholder="Past History" style="padding:1rem" />
+                    </div>
+                    
+                    <div *ngIf="from == 'patient'" class="form-group">
+                        <input id="allergies" type="text" (ngModelChange)="clearDefaults()" class="form-control w-full md:w-30rem mb-5"
+                            name="allergies" [(ngModel)]="form.allergies" required #allergies="ngModel" pInputText
+                            placeholder="Allergies" style="padding:1rem" />
+                    </div>
+                    
+                 
+                    
+                    <div class="form-group">
+                        <input id="phoneNumber" type="text" (ngModelChange)="clearDefaults()" class="form-control w-full md:w-30rem mb-5"
+                            name="phoneNumber" [(ngModel)]="form.phoneNumber" required #phoneNumber="ngModel" pInputText
+                            placeholder="Phone Number" style="padding:1rem" />
+                    </div>
+                    
+                    <div class="form-group">
+                        <input id="age" type="number" (ngModelChange)="clearDefaults()" class="form-control w-full md:w-30rem mb-5"
+                            name="age" [(ngModel)]="form.age" required #age="ngModel" pInputText placeholder="Age" style="padding:1rem" />
+                    </div>
+
+                    
+                    
+                    <div style="width:  400px;" class="form-group">
+                        <p-dropdown id="gender" [options]="genders" [(ngModel)]="form.gender" placeholder="Select Gender"
+                            name="gender"></p-dropdown>
+                    </div>
+                    
+                    <div class="form-group">
+                        <p-checkbox id="isConsentChecked" name="isConsentChecked" [(ngModel)]="form.isConsentChecked" binary="true">
+                        </p-checkbox>
+                        <label for="isConsentChecked"> I give my consent</label>
+                    </div>
+                    
+                    
+                    
+                   
+
+                    <div class="form-group">
+                        <button (click)="onSubmit()" pButton pRipple label="Sign Up" class="w-full p-3 text-xl"></button>
+                    </div>
+                    <div class="form-group">
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
