@@ -3,6 +3,9 @@
 🌍 Deployed URL:
 👉 https://bayershealthcareportal.azurewebsites.net/
 
+usern name:  8553655890
+password:    qwerty
+
 ⚙️ CI/CD Pipeline (GitHub Actions)
 This project uses GitHub Actions to automate the deployment process to Azure App Service.
 
