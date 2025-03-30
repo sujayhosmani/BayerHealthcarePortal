@@ -1,7 +1,7 @@
 # Docs for the Azure Web Apps Deploy action: https://github.com/Azure/webapps-deploy
 # More GitHub Actions for Azure: https://github.com/Azure/actions
 
-name: Build and deploy Angular app to Azure Web App - BayersHealthcarePortal
+name: Build and deploy Node.js app to Azure Web App - BayersHealthcarePortal
 
 on:
   push:
@@ -13,28 +13,26 @@ jobs:
   build:
     runs-on: windows-latest
     permissions:
-      contents: read # Required for actions/checkout
+      contents: read #This is required for actions/checkout
 
     steps:
-      - name: 🛠 Checkout Code
-        uses: actions/checkout@v4
+      - uses: actions/checkout@v4
 
-      - name: ⚙️ Set up Node.js
+      - name: Set up Node.js version
         uses: actions/setup-node@v3
         with:
           node-version: '20.x'
 
-      - name: 📦 Install Dependencies
-        run: npm install
-
-      - name: 🏗️ Build Angular App
-        run: npm run build -- --configuration=production
+      - name: npm install and build
+        run: |
+          npm install
+          npm run build --if-present
       
-      - name: 🚀 Upload Artifact for Deployment
+      - name: Upload artifact for deployment job
         uses: actions/upload-artifact@v4
         with:
-          name: angular-app
-          path: dist/sakai-ng  # ✅ Make sure 'sakai-ng' is the correct output folder
+          name: node-app
+          path: .
 
   deploy:
     runs-on: ubuntu-latest
@@ -44,16 +42,16 @@ jobs:
       url: ${{ steps.deploy-to-webapp.outputs.webapp-url }}
     
     steps:
-      - name: 📥 Download Build Artifact
+      - name: Download artifact from build job
         uses: actions/download-artifact@v4
         with:
-          name: angular-app
+          name: node-app
       
-      - name: 🚀 Deploy to Azure Web App
+      - name: 'Deploy to Azure Web App'
         uses: azure/webapps-deploy@v3
         id: deploy-to-webapp
         with:
           app-name: 'BayersHealthcarePortal'
           slot-name: 'Production'
-          package: "dist/sakai-ng"  
+          package: .
           publish-profile: ${{ secrets.AZURE_WEBAPP_PUBLISH_PROFILE }}
