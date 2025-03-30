@@ -1,4 +1,13 @@
-# Sakai
+# Bayers Healthcare Portal
+
+🌍 Deployed URL
+👉 https://bayershealthcareportal.azurewebsites.net/
+
+⚙️ CI/CD Pipeline (GitHub Actions)
+This project uses GitHub Actions to automate the deployment process to Azure App Service.
+
+✅ On every push to master, the Angular app is built and deployed automatically.
+✅ The workflow installs dependencies, runs tests, builds the project, and deploys it to Azure.
 
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 13.0.4.
 

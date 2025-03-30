@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { CoreNetworkService } from '../../shared/services/core.network.service';
 import { TokenStorageService } from '../../auth/service/token-storage.service';
 import { VaccinationMaster } from '../../models/vaccines-masters';
@@ -10,7 +10,7 @@ import { vaccinePost } from '../../helpers/constants/constants';
   styleUrl: './vaccinations.component.scss'
 })
 export class VaccinationsComponent {
-  vaccinesSubmissions: VaccinationSubmissions[] = [];
+  @Input() vaccinesSubmissions: VaccinationSubmissions[] = [];
    vaccines: VaccinationMaster[] = [];
   visible = false;
   form: VaccinationSubmissions = {
@@ -31,19 +31,10 @@ export class VaccinationsComponent {
       const user = tokenStorage.getReadableToken();
       console.log(user);
       this.id = user.Id;
-      this.getAll();
       this.getAllVacc();
     }
 
-  getAll(){
-    
-    this.network.getAll('VaccineSubmission/vaccine/submission').subscribe((response: any) => {
-      console.log(response);
-      this.vaccinesSubmissions = response;
-      this.vaccinesSubmissions = this.vaccinesSubmissions.filter(e => e.patientId === this.id);  
-    }
-    );
-  }
+  
 
   onItemSubmit(){
     console.log(this.form);

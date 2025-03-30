@@ -4,6 +4,9 @@ import { Product } from '../../api/product';
 import { ProductService } from '../../service/product.service';
 import { Subscription, debounceTime } from 'rxjs';
 import { LayoutService } from 'src/app/layout/service/app.layout.service';
+import { CoreNetworkService } from '../shared/services/core.network.service';
+import { VaccinationSubmissions } from './vaccinations/vaccinations.component';
+import { TokenStorageService } from '../auth/service/token-storage.service';
 
 @Component({
     templateUrl: './dashboard.component.html',
@@ -11,95 +14,44 @@ import { LayoutService } from 'src/app/layout/service/app.layout.service';
 export class DashboardComponent implements OnInit, OnDestroy {
 
     items!: MenuItem[];
-
-    products!: Product[];
-
-    chartData: any;
-
-    chartOptions: any;
+    vaccinesSubmissions: VaccinationSubmissions[] = [];
+    pending: string = '0';
+    scheduled: string = '0';
+    id: string = '';
 
     subscription!: Subscription;
 
-    constructor(private productService: ProductService, public layoutService: LayoutService) {
-        this.subscription = this.layoutService.configUpdate$
-        .pipe(debounceTime(25))
-        .subscribe((config) => {
-            this.initChart();
-        });
+    constructor(private network: CoreNetworkService, public layoutService: LayoutService, tokenStorage: TokenStorageService) {
+        const user = tokenStorage.getReadableToken();
+        console.log(user);
+        this.id = user.Id;
     }
 
     ngOnInit() {
-        this.initChart();
-        this.productService.getProductsSmall().then(data => this.products = data);
-
+        this.getAll();
         this.items = [
             { label: 'Add New', icon: 'pi pi-fw pi-plus' },
             { label: 'Remove', icon: 'pi pi-fw pi-minus' }
         ];
     }
 
-    initChart() {
-        const documentStyle = getComputedStyle(document.documentElement);
-        const textColor = documentStyle.getPropertyValue('--text-color');
-        const textColorSecondary = documentStyle.getPropertyValue('--text-color-secondary');
-        const surfaceBorder = documentStyle.getPropertyValue('--surface-border');
 
-        this.chartData = {
-            labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July'],
-            datasets: [
-                {
-                    label: 'First Dataset',
-                    data: [65, 59, 80, 81, 56, 55, 40],
-                    fill: false,
-                    backgroundColor: documentStyle.getPropertyValue('--bluegray-700'),
-                    borderColor: documentStyle.getPropertyValue('--bluegray-700'),
-                    tension: .4
-                },
-                {
-                    label: 'Second Dataset',
-                    data: [28, 48, 40, 19, 86, 27, 90],
-                    fill: false,
-                    backgroundColor: documentStyle.getPropertyValue('--green-600'),
-                    borderColor: documentStyle.getPropertyValue('--green-600'),
-                    tension: .4
-                }
-            ]
-        };
-
-        this.chartOptions = {
-            plugins: {
-                legend: {
-                    labels: {
-                        color: textColor
-                    }
-                }
-            },
-            scales: {
-                x: {
-                    ticks: {
-                        color: textColorSecondary
-                    },
-                    grid: {
-                        color: surfaceBorder,
-                        drawBorder: false
-                    }
-                },
-                y: {
-                    ticks: {
-                        color: textColorSecondary
-                    },
-                    grid: {
-                        color: surfaceBorder,
-                        drawBorder: false
-                    }
-                }
-            }
-        };
-    }
 
     ngOnDestroy() {
         if (this.subscription) {
             this.subscription.unsubscribe();
         }
     }
+
+    getAll(){
+    
+        this.network.getAll('VaccineSubmission/vaccine/submission').subscribe((response: any) => {
+          console.log(response);
+          this.vaccinesSubmissions = response;
+          this.vaccinesSubmissions = this.vaccinesSubmissions.filter(e => e.patientId === this.id);  
+          this.pending = this.vaccinesSubmissions.filter(e => e.status === 'Pending').length.toString();
+          this.scheduled = this.vaccinesSubmissions.filter(e => e.status === 'Scheduled').length.toString();
+        }
+        );
+      }
 }

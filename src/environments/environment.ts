@@ -4,7 +4,7 @@
 
 export const environment = {
   production: false,
-  baseUrl: 'https://localhost:7298/api/',
+  baseUrl: 'https://bayershealthcare.azurewebsites.net/api/',
 };
 
 /*
