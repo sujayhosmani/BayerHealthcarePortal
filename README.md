@@ -1,6 +1,6 @@
 # Bayers Healthcare Portal
 
-🌍 Deployed URL
+🌍 Deployed URL:
 👉 https://bayershealthcareportal.azurewebsites.net/
 
 ⚙️ CI/CD Pipeline (GitHub Actions)
