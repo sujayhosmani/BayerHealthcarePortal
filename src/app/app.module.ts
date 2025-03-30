@@ -43,7 +43,7 @@ import { DialogModule } from 'primeng/dialog';
     DialogModule
 ],
     providers: [
-        // { provide: HTTP_INTERCEPTORS, useClass: LoaderInterceptor, multi: true },
+         { provide: HTTP_INTERCEPTORS, useClass: LoaderInterceptor, multi: true },
         { provide: LocationStrategy, useClass: HashLocationStrategy },
         CountryService, CustomerService, EventService, IconService, NodeService,
         PhotoService, authInterceptorProviders, ProductService
